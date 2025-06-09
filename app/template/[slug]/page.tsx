@@ -8,9 +8,9 @@ import { Gallery } from '@/components/ui/gallery'
 import { siteConfig } from '@/lib/site-config'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function TemplatePage({ params }: PageProps) {
