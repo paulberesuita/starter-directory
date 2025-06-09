@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Template } from "@/lib/templates-data"
+import { Template } from "@/lib/supabase"
 import { siteConfig } from "@/lib/site-config"
 
 interface TemplateCardProps {
@@ -10,7 +10,7 @@ interface TemplateCardProps {
 
 export function TemplateCard({ template }: TemplateCardProps) {
   return (
-    <Link href={`/template/${template.slug}`} className="block group">
+    <Link href={`/template/${template.id}`} className="block group">
       <Card className="h-full flex flex-col shadow-none border transition-all duration-200 template-card cursor-pointer">
         <CardHeader>
           <CardTitle className="text-lg group-hover:text-gray-600 transition-colors">
@@ -27,7 +27,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
         <CardFooter className="flex items-center justify-between">
           {siteConfig.templates.card.showPrice && (
             <span className="text-xl">
-              {siteConfig.templates.currency}{template.price.replace('$', '')}
+              {siteConfig.templates.currency}{template.price}
             </span>
           )}
           <Button 

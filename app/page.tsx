@@ -1,14 +1,33 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useEffect } from "react"
 import Fuse from "fuse.js"
 import { Header } from "@/components/header"
 import { TemplateCard } from "@/components/template-card"
-import { templates } from "@/lib/templates-data"
+import { getAllTemplates } from "@/lib/supabase-data"
+import { Template } from "@/lib/supabase"
 import { siteConfig } from "@/lib/site-config"
 
 export default function Home() {
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
+
+  // Fetch templates from Supabase
+  useEffect(() => {
+    async function fetchTemplates() {
+      try {
+        const data = await getAllTemplates()
+        setTemplates(data)
+      } catch (error) {
+        console.error('Failed to fetch templates:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchTemplates()
+  }, [])
 
   // Configure Fuse.js for fuzzy search
   const fuse = useMemo(() => {
@@ -17,7 +36,7 @@ export default function Home() {
       threshold: siteConfig.search.fuzzyThreshold,
       includeScore: true,
     })
-  }, [])
+  }, [templates])
 
   // Filter templates based on search query
   const filteredTemplates = useMemo(() => {
@@ -53,17 +72,23 @@ export default function Home() {
           </p>
         </div>
         
-        {filteredTemplates.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-12">
+            <p className="text-lg text-muted-foreground">Loading templates...</p>
+          </div>
+        ) : filteredTemplates.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground">
-              {siteConfig.content.noResults.title} "{searchQuery}"
+              {searchQuery ? `${siteConfig.content.noResults.title} "${searchQuery}"` : 'No templates found'}
             </p>
-            <button
-              onClick={() => setSearchQuery("")}
-              className="mt-4 text-sm text-primary hover:underline"
-            >
-              {siteConfig.content.noResults.clearButton}
-            </button>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-4 text-sm text-primary hover:underline"
+              >
+                {siteConfig.content.noResults.clearButton}
+              </button>
+            )}
           </div>
         ) : (
           <div className={gridClasses}>

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ExternalLink, CheckCircle } from 'lucide-react'
-import { getTemplateBySlug, getRelatedTemplates } from '@/lib/templates-data'
+import { getTemplateBySlug, getRelatedTemplates } from '@/lib/supabase-data'
 import { TemplateCard } from '@/components/template-card'
 import { Button } from '@/components/ui/button'
 import { Gallery } from '@/components/ui/gallery'
@@ -15,14 +15,14 @@ interface PageProps {
 
 export default async function TemplatePage({ params }: PageProps) {
   const { slug } = await params
-  const template = getTemplateBySlug(slug)
+  const template = await getTemplateBySlug(slug)
 
   if (!template) {
     notFound()
   }
 
   const relatedTemplates = siteConfig.detailPage.enableRelatedTemplates 
-    ? getRelatedTemplates(template.id, siteConfig.detailPage.relatedTemplatesCount)
+    ? await getRelatedTemplates(template.id, siteConfig.detailPage.relatedTemplatesCount)
     : []
 
   return (
@@ -56,7 +56,7 @@ export default async function TemplatePage({ params }: PageProps) {
           <div className="mb-12">
             <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
               <span className="text-gray-500 text-sm">
-                Updated {new Date(template.lastUpdated).toLocaleDateString('en-US', { 
+                Updated {new Date(template.last_updated).toLocaleDateString('en-US', { 
                   year: 'numeric', 
                   month: 'long', 
                   day: 'numeric' 
@@ -82,9 +82,9 @@ export default async function TemplatePage({ params }: PageProps) {
 
             {/* Price and demo button */}
             <div className="flex flex-wrap items-center justify-center gap-4">              
-              {siteConfig.detailPage.enableDemo && template.demoUrl && (
+              {siteConfig.detailPage.enableDemo && template.demo_url && (
                 <a 
-                  href={template.demoUrl} 
+                  href={template.demo_url} 
                   target="_blank" 
                   rel="noopener noreferrer"
                 >
@@ -114,7 +114,7 @@ export default async function TemplatePage({ params }: PageProps) {
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Description</h2>
               <div className="prose prose-gray max-w-none">
                 <p className="text-gray-600 leading-relaxed">
-                  {template.fullDescription}
+                  {template.full_description}
                 </p>
                 <p className="text-gray-600 leading-relaxed mt-4">
                   This template showcases modern design principles and user-centric interfaces. 
