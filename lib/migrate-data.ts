@@ -7,7 +7,7 @@ export async function migrateTemplatesToSupabase() {
   
   try {
     for (const template of templates) {
-      console.log(`Migrating template: ${template.name}`)
+      console.log(`  template: ${template.name}`)
       
       // Convert the existing template format to match Supabase schema
       const supabaseTemplate = {
@@ -18,19 +18,25 @@ export async function migrateTemplatesToSupabase() {
         category: template.category,
         tags: template.tags,
         price: parseFloat(template.price.replace('$', '')), // Convert "$89" to 89
-        demo_url: template.demoUrl,
+        demo_url: template.demoUrl, // Keep as undefined if not present
         purchase_url: undefined, // This field doesn't exist in original data
         last_updated: template.lastUpdated,
         features: template.features,
         gallery: template.gallery,
       }
       
-      const result = await createTemplate(supabaseTemplate)
+      console.log(`   Converting data for ${template.name}:`, {
+        originalPrice: template.price,
+        convertedPrice: supabaseTemplate.price,
+        demoUrl: supabaseTemplate.demo_url
+      })
       
-      if (result) {
+      try {
+        const result = await createTemplate(supabaseTemplate)
         console.log(`✅ Successfully migrated: ${template.name}`)
-      } else {
+      } catch (templateError) {
         console.log(`❌ Failed to migrate: ${template.name}`)
+        console.error(`   Error: ${templateError instanceof Error ? templateError.message : JSON.stringify(templateError)}`)
       }
     }
     
@@ -40,5 +46,7 @@ export async function migrateTemplatesToSupabase() {
   }
 }
 
-// You can run this function once to migrate your data
-migrateTemplatesToSupabase() 
+// Auto-run migration in development mode if URL parameter is present
+if (typeof window !== 'undefined' && window.location.search.includes('migrate=true')) {
+  migrateTemplatesToSupabase()
+} 

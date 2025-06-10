@@ -114,7 +114,7 @@ export async function createTemplate(template: TemplateInsert): Promise<Template
 
   if (error) {
     console.error('Error creating template:', error)
-    return null
+    throw new Error(`Failed to create template: ${error.message || JSON.stringify(error)}`)
   }
 
   return data
