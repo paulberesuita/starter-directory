@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, ExternalLink, CheckCircle } from 'lucide-react'
 import { getTemplateBySlug, getRelatedTemplates } from '@/lib/supabase-data'
-import { TemplateCard } from '@/components/template-card'
+import { RelatedTemplates } from '@/components/related-templates'
 import { Button } from '@/components/ui/button'
 import { Gallery } from '@/components/ui/gallery'
 import { siteConfig } from '@/lib/site-config'
@@ -195,21 +195,10 @@ export default async function TemplatePage({ params }: PageProps) {
 
 
           {/* Related templates */}
-          {relatedTemplates.length > 0 && (
-            <div className="pt-16 border-t border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900 mb-8">
-                More {template.category} Templates
-              </h2>
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {relatedTemplates.map((relatedTemplate) => (
-                  <TemplateCard 
-                    key={relatedTemplate.id} 
-                    template={relatedTemplate} 
-                  />
-                ))}
-              </div>
-            </div>
-          )}
+          <RelatedTemplates 
+            templates={relatedTemplates}
+            category={template.category}
+          />
         </div>
       </div>
     </div>
