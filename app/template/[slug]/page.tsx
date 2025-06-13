@@ -108,7 +108,7 @@ export default async function TemplatePage({ params }: PageProps) {
           )}
 
           {/* Content sections - Left aligned */}
-          <div className="text-left space-y-8 max-w-2xl mx-auto">
+          <div className="text-left space-y-8 max-w-2xl mx-auto pb-12">
             {/* Description */}
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Description</h2>
@@ -191,8 +191,6 @@ export default async function TemplatePage({ params }: PageProps) {
               </div>
             </div>
           </div>
-
-
 
           {/* Related templates */}
           <RelatedTemplates 

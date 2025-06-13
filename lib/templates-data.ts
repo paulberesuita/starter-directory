@@ -1,3 +1,5 @@
+import { getGalleryImageUrl } from './supabase'
+
 export interface Template {
   id: number
   name: string
@@ -34,9 +36,9 @@ export const templates: Template[] = [
       "Role-based permissions"
     ],
     gallery: [
-      "/images/templates/duck.png",
-      "/images/templates/duck.png", 
-      "/images/templates/duck.png"
+      getGalleryImageUrl('pic1.png'),
+      getGalleryImageUrl('pic2.png'), 
+      getGalleryImageUrl('pic3.png')
     ],
     demoUrl: "https://demo.example.com/saas-dashboard",
     tags: ["SAAS", "RESPONSIVE", "FREE", "REAL ESTATE"],
@@ -61,9 +63,9 @@ export const templates: Template[] = [
       "SEO optimized"
     ],
     gallery: [
-      "/images/templates/duck.png",
-      "/images/templates/duck.png",
-      "/images/templates/duck.png"
+      getGalleryImageUrl('pic4.png'),
+      getGalleryImageUrl('pic1.png'),
+      getGalleryImageUrl('pic2.png')
     ],
     demoUrl: "https://demo.example.com/marketplace",
     tags: ["SAAS", "RESPONSIVE", "FREE", "REAL ESTATE"],
@@ -88,8 +90,8 @@ export const templates: Template[] = [
       "Integration capabilities"
     ],
     gallery: [
-      "/images/templates/duck.png",
-      "/images/templates/duck.png"
+      getGalleryImageUrl('pic3.png'),
+      getGalleryImageUrl('pic4.png')
     ],
     demoUrl: "https://demo.example.com/task-management",
     tags: ["SAAS", "RESPONSIVE", "FREE", "REAL ESTATE"],
@@ -114,9 +116,9 @@ export const templates: Template[] = [
       "Mobile app ready"
     ],
     gallery: [
-      "/images/templates/duck.png",
-      "/images/templates/duck.png",
-      "/images/templates/duck.png"
+      getGalleryImageUrl('pic2.png'),
+      getGalleryImageUrl('pic3.png'),
+      getGalleryImageUrl('pic1.png')
     ],
     demoUrl: "https://demo.example.com/real-estate",
     tags: ["SAAS", "RESPONSIVE", "FREE", "REAL ESTATE"],
